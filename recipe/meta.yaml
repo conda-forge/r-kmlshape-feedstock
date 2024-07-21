@@ -1,6 +1,5 @@
 {% set version = '0.9.5' %}
 {% set posix = 'm2-' if win else '' %}
-{% set native = 'm2w64-' if win else '' %}
 
 package:
   name: r-kmlshape
@@ -13,9 +12,8 @@ source:
   sha256: 617542d4981bb3ae5b839358e446b00c0706185d4d4f8f0efe561284258c65dc
 
 build:
-  merge_build_host: True  # [win]
   skip: True  # [osx]
-  number: 3
+  number: 4
   rpaths:
     - lib/R/lib/
     - lib/
@@ -23,7 +21,9 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}              # [not win]
+    - {{ stdlib("c") }}                # [not win]
     - {{ compiler('m2w64_c') }}        # [win]
+    - {{ stdlib("m2w64_c") }}          # [win]
     - {{ posix }}filesystem        # [win]
     - {{ posix }}make
     - {{ posix }}sed               # [win]
@@ -43,7 +43,6 @@ requirements:
     - r-longitudinaldata
   run:
     - r-base
-    - {{ native }}gcc-libs         # [win]
     - r-class
     - r-kml
     - r-lattice
